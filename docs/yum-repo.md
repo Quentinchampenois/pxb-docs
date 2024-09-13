@@ -20,30 +20,74 @@ To install Percona XtraBackup from Percona `yum` repository, do the following st
     noarch.rpm
     ```
 
+    ??? example "Expected output"
+
+        ```{.text .no-copy}
+        Oracle Linux 9 BaseOS Latest (x86_64)           8.4 MB/s |  43 MB     00:05    
+        Oracle Linux 9 Application Stream Packages (x86 8.6 MB/s |  47 MB     00:05    
+        Last metadata expiration check: 0:00:06 ago on Wed Dec 11 14:12:54 2024.
+        percona-release-latest.noarch.rpm                62 kB/s |  27 kB     00:00    
+        Dependencies resolved.
+        ...
+        For more information, please visit:
+        https://docs.percona.com/percona-software-repositories/percona-release.html
+
+
+        Verifying        : percona-release-1.0-29.noarch                          1/1 
+
+        Installed:
+        percona-release-1.0-29.noarch                                                 
+
+        Complete!
+        ```
+
 2. Enable the repository: 
 
     ```{.bash data-prompt="$"}
-    $ sudo percona-release enable-only tools release
+    $ sudo percona-release enable pxb-84-lts
     ```
 
-    If *Percona XtraBackup* is intended to be used in combination with
-    the upstream MySQL Server, you only need to enable the `tools repository: 
+    ??? example "Expected output"
+
+        ```{.text .no-copy}
+        * Enabling the Percona Packaging Repository repository
+        <*> All done!
+        ```
+
+3. Install Percona XtraBackup.
 
     ```{.bash data-prompt="$"}
-    $ sudo percona-release enable-only tools
+    $ sudo yum install percona-xtrabackup-84
     ```
 
-3. Install *Percona XtraBackup* by running:
+    ??? example "Expected output"
+
+        ```{.text .no-copy}
+        PMM2 Client release/x86_64 YUM repository        17 kB/s | 7.1 kB     00:00    
+        Percona Release release/noarch YUM repository   5.3 kB/s | 2.0 kB     00:00    
+        Percona Packaging Repository release/x86_64 YUM  95 kB/s |  52 kB     00:00    
+        Percona Telemetry release/x86_64 YUM repository 4.3 kB/s | 1.7 kB     00:00    
+        Dependencies resolved.
+        ...
+        perl-subs-1.03-481.el9.noarch                                                 
+        perl-vars-1.05-481.el9.noarch                                                 
+        rsync-3.2.3-20.el9.x86_64                                                     
+        zstd-1.5.1-2.el9.x86_64 
+        ```
+        
+4. Verify the installation.
 
     ```{.bash data-prompt="$"}
-    $ sudo yum install percona-xtrabackup-{{pkg}}
+    $ xtrabackup --version
     ```
 
-    !!! warning
+    ??? example "Expected output"
 
-        Make sure that you have the `libev` package installed before installing *Percona XtraBackup* on CentOS 6. For this operating system, the `libev` package is available from the [EPEL](https://fedoraproject.org/wiki/EPEL) repositories.
+        ```{.text .no-copy}
+        xtrabackup version 8.4.0-1 based on MySQL server 8.4.0 Linux (x86_64) (revision id: da6e1abd)
+        ```
 
-4. To decompress backups made using `LZ4` or `ZSTD` compression algorithm, install the corresponding package:
+5. To decompress backups made using `LZ4` or `ZSTD` compression algorithm, install the corresponding package:
 
     === "Install the `lz4` package"
 
