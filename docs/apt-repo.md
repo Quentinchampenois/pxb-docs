@@ -10,6 +10,8 @@ To prevent intermittent backup failures, [update the curl utility in Debian 10](
 
 This guide walks you through the process of installing Percona XtraBackup 8.0 on Debian-based systems using the Percona-release tool.
 
+--8<--- "get-help-snip.md"
+
 ## Version changes
 
 Starting with [Percona XtraBackup 8.0.35-31], the APT builds for the following platforms include ARM packages with the `arm64.deb` extension:

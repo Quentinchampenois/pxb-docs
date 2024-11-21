@@ -8,6 +8,8 @@ Percona XtraBackup has an official Docker image hosted on [Docker Hub](https://h
 
 Make sure that you are using the latest version of Docker. The `APT` and `YUM` versions may be outdated and cause errors. Use the [installation instructions](https://docs.docker.com/engine/install/) to install Docker on your system.
 
+--8<--- "get-help-snip.md"
+
 ## 1. Run Percona Server for MySQL container
 
 Percona XtraBackup works in combination with a MySQL-compatible database, Percona Server for MySQL, in our example. To take a backup of Percona Server for MySQL, run Percona Server for MySQL in a Docker container and create a database with data. Read the instructions on how to [Run Percona Server for MySQL in a Docker Container](https://docs.percona.com/percona-server/8.0/docker.html).
