@@ -213,6 +213,10 @@
          <lastmod>2024-12-18</lastmod>
     </url>
     <url>
+         <loc>https://docs.percona.com/percona-xtrabackup/8.4/reduction-in-locks.html</loc>
+         <lastmod>2024-12-18</lastmod>
+    </url>
+    <url>
          <loc>https://docs.percona.com/percona-xtrabackup/8.4/restore-a-backup.html</loc>
          <lastmod>2024-12-18</lastmod>
     </url>

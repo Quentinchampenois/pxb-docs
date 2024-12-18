@@ -1041,6 +1041,70 @@
   
   
   
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Pro build features
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            Pro build features
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="reduction-in-locks.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reduced backup lock time
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="flush-tables-with-read-lock.html" class="md-nav__link">
         
@@ -1068,27 +1132,6 @@
   
   <span class="md-ellipsis">
     Improved log statements
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="lock-options.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    lock-ddl-per-table option improvements
   </span>
   
 
@@ -6530,14 +6573,60 @@ global lock. The default value is “select”.</p>
 <h3 id="lock-ddl">lock-ddl<a class="headerlink" href="#lock-ddl" title="Permanent link">&para;</a></h3>
 <p>Usage: <code>--lock-ddl</code></p>
 <p>Enabled by default to ensure that any DDL event does not corrupt the backup. Any DML events continue to occur. A DDL lock protects table and view definitions.</p>
-<p>If the option is disabled, a backup continues while concurrent DDL events are executed. These backups are invalid and fail in the Prepare step.</p>
+<p>The available values are the following:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--lock-ddl=ON</code></td>
+<td>The backup lock is enabled and is taken at the beginning of the backup.</td>
+</tr>
+<tr>
+<td><code>--lock-ddl=OFF</code></td>
+<td>The backup lock is not taken.</td>
+</tr>
+<tr>
+<td><code>--lock-ddl=REDUCED</code></td>
+<td>This option value is a <a href="glossary.html#tech-preview">tech preview</a>. <br><br> The option value has been added in <a href="./release-notes/8.4.0-2.md">Percona XtraBackup 8.4.0-2</a> to reduce the time the instance remains under backup lock. The backup lock is taken after copying the <code>.ibd</code> files and before copying the <code>non-InnoDB</code> files.</td>
+</tr>
+</tbody>
+</table>
+<p class="power-number">With the <code>--lock-ddl=ON</code> option the backup process is as follows:</p>
+<ol>
+<li>
+<p>Set a backup lock on the server to prevent any DDL operations, such as creating or altering tables.</p>
+</li>
+<li>
+<p>Parse and copy the redo logs from the checkpoint up to the current <code>Log Sequence Number</code> (LSN), and start tracking new file operations.</p>
+</li>
+<li>
+<p>Identify and copy the <code>.ibd</code> files.</p>
+</li>
+<li>
+<p>Copy <code>non-InnoDB</code> files.</p>
+</li>
+<li>
+<p>Gather a sync point from all engines (InnoDB LSN, binlog, Global Transaction Identifier (GTID), etc.) by querying the log status.</p>
+</li>
+<li>
+<p>Stop the redo thread once it copies at least up to sync point.</p>
+</li>
+<li>
+<p>Release the backup lock on the server.</p>
+</li>
+</ol>
+<p>If the backup lock is disabled with the <a href="xtrabackup-option-reference.html#lock-ddl"><code>--lock-ddl=OFF</code></a> option, a backup continues while concurrent DDL operations are executed. These backups may be invalid and may fail at either the <code>backup</code> or the <code>--prepare</code> step.</p>
 <p>Use a <a href="#safe-slave-backup">safe-slave-backup</a> option to stop a SQL replica thread before copying the InnoDB files.</p>
 <h3 id="lock-ddl-per-table">lock-ddl-per-table<a class="headerlink" href="#lock-ddl-per-table" title="Permanent link">&para;</a></h3>
 <p>Usage: <code>--lock-ddl-per-table</code></p>
-<p>Deprecated. Use the <a href="#lock-ddl"><code>–lock-ddl</code></a> option instead</p>
+<p>Deprecated in Percona XtraBackup 8.0. Use the <a href="#lock-ddl"><code>–lock-ddl</code></a> option instead</p>
 <!--26-1-24-->
-<p>Lock DDL for each table before xtrabackup starts to copy
-it and until the backup is completed.</p>
+<p>Lock DDL for each table before xtrabackup starts to copy it and until the backup is completed.</p>
 <h3 id="lock-ddl-timeout">lock-ddl-timeout<a class="headerlink" href="#lock-ddl-timeout" title="Permanent link">&para;</a></h3>
 <p>Usage: <code>--lock-ddl-timeout</code></p>
 <p>If <code>LOCK TABLES FOR BACKUP</code> or <code>LOCK INSTANCE FOR BACKUP</code> does not return
@@ -6842,7 +6931,7 @@ mysql –help for details.</p>
   <small>
     
       Last update:
-      2024-08-13
+      2024-12-18
     
   </small>
 </div>

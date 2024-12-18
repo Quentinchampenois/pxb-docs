@@ -756,9 +756,9 @@ consistent, usable database again.">
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#restoring-a-backup" class="md-nav__link">
+  <a href="#restore-a-backup" class="md-nav__link">
     <span class="md-ellipsis">
-      Restoring a backup
+      Restore a backup
     </span>
   </a>
   
@@ -1106,6 +1106,70 @@ consistent, usable database again.">
   
   
   
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Pro build features
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            Pro build features
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="reduction-in-locks.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reduced backup lock time
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="flush-tables-with-read-lock.html" class="md-nav__link">
         
@@ -1133,27 +1197,6 @@ consistent, usable database again.">
   
   <span class="md-ellipsis">
     Improved log statements
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="lock-options.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    lock-ddl-per-table option improvements
   </span>
   
 
@@ -3744,9 +3787,9 @@ consistent, usable database again.">
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#restoring-a-backup" class="md-nav__link">
+  <a href="#restore-a-backup" class="md-nav__link">
     <span class="md-ellipsis">
-      Restoring a backup
+      Restore a backup
     </span>
   </a>
   
@@ -3811,11 +3854,7 @@ performs an undo operation on any transactions that modified data but did not
 commit.</p>
 <p>The <code>--register-redo-log-consumer</code> parameter is disabled by default. When enabled, this parameter lets Percona XtraBackup register as a redo log consumer at the start of the backup. The server does not remove a redo log that Percona XtraBackup (the consumer) has not yet copied. The consumer reads the redo log and manually advances the log sequence number (LSN). The server blocks the writes during the process. Based on the redo log consumption, the server determines when it can purge the log.  </p>
 <p>Percona XtraBackup remembers the LSN when it starts, and then copies the data files. The operation takes time, and the files may change, then LSN reflects the state of the database at different points in time. Percona XtraBackup also runs a background process that watches the transaction log files, and copies any changes. Percona XtraBackup does this continually. The transaction logs are written in a round-robin fashion, and can be reused.</p>
-<p>Percona XtraBackup uses <a href="https://docs.percona.com/percona-server/innovation-release/backup-locks.html">Backup locks</a></p>
-<p>where available as a lightweight alternative to <code>FLUSH TABLES WITH READ
-LOCK</code>. MySQL 8.4 allows
-acquiring an instance level backup lock via the <code>LOCK INSTANCE FOR BACKUP</code>
-statement.</p>
+<p>Percona XtraBackup uses <a href="https://docs.percona.com/percona-server/innovation-release/backup-locks.html">Backup locks</a> where available as a lightweight alternative to <code>FLUSH TABLES WITH READ LOCK</code>. MySQL 8.4 allows acquiring an instance level backup lock via the <code>LOCK INSTANCE FOR BACKUP</code> statement.</p>
 <p>Locking is only done for MyISAM and other non-InnoDB tables
 after Percona XtraBackup finishes backing up all InnoDB/XtraDB data and
 logs. Percona XtraBackup uses this automatically to copy non-InnoDB data to
@@ -3870,7 +3909,7 @@ detail further in this manual. In brief, though, the tools enable you
 to do operations such as streaming and incremental backups with
 various combinations of copying the data files, copying the log files,
 and applying the logs to the data.</p>
-<h2 id="restoring-a-backup">Restoring a backup<a class="headerlink" href="#restoring-a-backup" title="Permanent link">&para;</a></h2>
+<h2 id="restore-a-backup">Restore a backup<a class="headerlink" href="#restore-a-backup" title="Permanent link">&para;</a></h2>
 <p>To restore a backup with xtrabackup you can use the <code>--copy-back</code> or
 <code>--move-back</code> options.</p>
 <p>xtrabackup will read from the <code>my.cnf</code> the variables datadir,
@@ -3903,7 +3942,7 @@ both data files and their backup copies.</p>
   <small>
     
       Last update:
-      2024-08-13
+      2024-12-18
     
   </small>
 </div>
