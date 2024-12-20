@@ -36,7 +36,7 @@ This document provides guidelines how to install Pro packages of Percona XtraBac
             $ sudo apt install curl
             ```
 
-        3. Download the `percona-release` the repository package:
+        3. Download the `percona-release` repository package:
 
             ```{.bash data-prompt="$"}
             $ curl -O https://repo.percona.com/apt/percona-release_latest.generic_all.deb
